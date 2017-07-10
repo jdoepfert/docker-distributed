@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: jupyter-notebook
   labels:
+    expose: http
     name: jupyter-notebook
+    websocket: "true"
 spec:
-  # The LoadBalancer type is required to get a public IP
-  # address when running on Google Container Engine.
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-    - port: 80
+    - port: 8888
       targetPort: 8888
   selector:
     name: jupyter-notebook
@@ -31,15 +31,28 @@ spec:
     spec:
       containers:
         - name: jupyter-notebook
-          image: ogrisel/distributed:latest
-          args: ["start-notebook.sh"]
+          image: jdoepfert/docker-distributed:latest
+          args:  ["tail", "-f", "requirements.txt"]  # 
           ports:
             - name: http
               containerPort: 8888
-          volumeMounts:
-            - mountPath: /work
-              name: docker-distributed-repo
-      volumes:
-        - name: docker-distributed-repo
-          gitRepo:
-            repository: "https://github.com/ogrisel/docker-distributed"
+      #     volumeMounts:
+      #       - mountPath: /work
+      #         name: docker-distributed-repo
+      # volumes:
+      #   - name: docker-distributed-repo
+      #     gitRepo:
+      #       repository: "https://github.com/ogrisel/docker-distributed"
+
+
+
+# # write this in the ~/.jupyter/jupyter_notebook_config.py
+# root@jupyter-notebook-pw5fb:~/.jupyter# cat jupyter_notebook_config.py
+# # c.NotebookApp.password = ''
+# c.NotebookApp.token = ''
+# c.NotebookApp.allow_origin = '*'
+# c.NotebookApp.password = u'sha1:3c0b4c872d51:6dd2a7b586fa0a899f15386186dfdc3465d27829'
+
+# # execute server like this:
+# root@jupyter-notebook-pw5fb:~/.jupyter#
+# exec su $BASICUSER -c "env PATH=$PATH jupyter notebook --ip='*' --allow-root --no-browser $*"

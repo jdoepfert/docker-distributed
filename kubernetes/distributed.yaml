@@ -20,9 +20,11 @@ kind: Service
 metadata:
   name: dscheduler-status
   labels:
+    expose: http
     name: dscheduler-status
+    websocket: "true"
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 8787
       targetPort: 8787
@@ -46,8 +48,15 @@ spec:
     spec:
       containers:
         - name: dscheduler
-          image: ogrisel/distributed:latest
-          args: ["start-dscheduler.sh"]
+          image: jdoepfert/distributed:latest
+          args: ["start-dscheduler.sh"] #  ["tail", "-f", "requirements.txt"] 
+          resources:
+            limits:
+              cpu: 300m
+              memory: 4Gi
+            requests:
+              cpu: 300m
+              memory: 4Gi              
           ports:
           - name: rpc
             containerPort: 8786
@@ -59,7 +68,7 @@ metadata:
     name: dworker
   name: dworker
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     name: dworker
   template:
@@ -69,5 +78,20 @@ spec:
     spec:
       containers:
         - name: dworker
-          image: ogrisel/distributed:latest
-          args: ["start-dworker.sh"]
+          image: jdoepfert/distributed:latest
+          args:  ["start-dworker.sh"] # ["tail", "-f", "requirements.txt"]
+          resources:
+            limits:
+              cpu: 4
+              memory: 4Gi
+            requests:
+              cpu: 4
+              memory: 4Gi  
+
+
+# ---scheduler---
+# # leave out the --host option works
+# exec su $BASICUSER -c "env PATH=$PATH dask-scheduler  --bokeh-whitelist="*" $*"
+
+# ---worker---
+# exec su $BASICUSER -c "env PATH=$PATH dask-worker dscheduler:8786 $*"
