@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: dscheduler
-          image: jdoepfert/distributed:latest
+          image: jdoepfert/docker-distributed:latest
           args: ["start-dscheduler.sh"] #  ["tail", "-f", "requirements.txt"] 
           resources:
             limits:
@@ -78,7 +78,7 @@ spec:
     spec:
       containers:
         - name: dworker
-          image: jdoepfert/distributed:latest
+          image: jdoepfert/docker-distributed:latest
           args:  ["start-dworker.sh"] # ["tail", "-f", "requirements.txt"]
           resources:
             limits:

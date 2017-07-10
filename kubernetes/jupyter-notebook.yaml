@@ -32,7 +32,7 @@ spec:
       containers:
         - name: jupyter-notebook
           image: jdoepfert/docker-distributed:latest
-          args:  ["tail", "-f", "requirements.txt"]  # 
+          args:  ["start-notebook.sh"]# ["tail", "-f", "requirements.txt"]
           ports:
             - name: http
               containerPort: 8888
