@@ -1,3 +1,21 @@
+# My notes
+
+## Ramp up cluster
+`kubectl apply -f kubernetes/`
+
+## Inspect cluster
+`kubectl logs -f <PODNAME>` (workers, scheduler, jupyter server)
+
+visit https://dscheduler-status-sci.../status
+
+visit https://jupyter-notebook-sci...
+
+and install xgboost gist `git clone https://gist.github.com/0be63003f758ece185782ac4d3a72499.git`
+
+## Delete cluster
+
+`kubectl delete -f kubernetes/
+
 # Docker provisioning of Python Distributed compute cluster
 
 This repo hosts some sample configuration to set up docker-containerized

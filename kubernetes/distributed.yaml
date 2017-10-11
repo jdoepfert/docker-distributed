@@ -53,10 +53,10 @@ spec:
           resources:
             limits:
               cpu: 300m
-              memory: 4Gi
+              memory: 2Gi
             requests:
               cpu: 300m
-              memory: 4Gi              
+              memory: 2Gi              
           ports:
           - name: rpc
             containerPort: 8786
@@ -85,8 +85,8 @@ spec:
               cpu: 4
               memory: 4Gi
             requests:
-              cpu: 4
-              memory: 4Gi  
+              cpu: 1
+              memory: 2Gi  
 
 
 # ---scheduler---
